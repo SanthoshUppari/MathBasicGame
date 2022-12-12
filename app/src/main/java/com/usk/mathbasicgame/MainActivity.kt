@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar!!.title = "Simple Math Game"
+
         addition = findViewById(R.id.addButton)
         subtraction = findViewById(R.id.subButton)
         multi = findViewById(R.id.mulButton)

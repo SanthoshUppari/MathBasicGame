@@ -1,11 +1,14 @@
 package com.usk.mathbasicgame
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import java.util.Locale
 import kotlin.random.Random
 
 class GameActivity : AppCompatActivity() {
@@ -24,9 +27,15 @@ class GameActivity : AppCompatActivity() {
     var score = 0
     var lifeCount = 5;
 
+    lateinit var timer : CountDownTimer
+    private val startTimerInMillis : Long = 20000
+    var timeLeft : Long = startTimerInMillis
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+
+        supportActionBar!!.title = "Addition"
 
         textScore = findViewById(R.id.scoreTextView)
         textLife = findViewById(R.id.lifeTextView)
@@ -46,6 +55,7 @@ class GameActivity : AppCompatActivity() {
             if(input == ""){
                 Toast.makeText(applicationContext, "Plz enter answer...", Toast.LENGTH_LONG).show()
             }else{
+                pauseTimer()
                 var inputInt = input.toInt()
 
                 if(addResult == inputInt){
@@ -64,8 +74,18 @@ class GameActivity : AppCompatActivity() {
         }
 
         buttonNext.setOnClickListener {
-            generateQuestion()
-            editTextAns.setText("")
+            pauseTimer()
+            resetTimer()
+            if(lifeCount == 0){
+                Toast.makeText(applicationContext, "Game Over", Toast.LENGTH_LONG).show()
+                val intent = Intent(this@GameActivity, FinalActivity::class.java)
+                intent.putExtra("score", score)
+                startActivity(intent)
+                finish()
+            }else{
+                generateQuestion()
+                editTextAns.setText("")
+            }
         }
 
     }
@@ -78,6 +98,40 @@ class GameActivity : AppCompatActivity() {
 
         textQuestion.text = "$num1 + $num2"
 
-
+        startTimer()
     }
+
+    fun startTimer(){
+        timer = object : CountDownTimer(timeLeft, 1000){
+            override fun onTick(millisUntilFinish : Long) {
+                timeLeft = millisUntilFinish
+                updateText()
+            }
+
+            override fun onFinish() {
+                pauseTimer()
+                resetTimer()
+                updateText()
+                lifeCount--
+                textLife.text = lifeCount.toString()
+                textQuestion.text = "Your time is up!"
+            }
+
+        }.start()
+    }
+
+    fun pauseTimer(){
+        timer.cancel()
+    }
+
+    fun resetTimer(){
+        timeLeft = startTimerInMillis
+        updateText()
+    }
+
+    fun updateText(){
+        val remaingTime : Int = (timeLeft /1000).toInt()
+        textTime.text = String.format(Locale.getDefault(), "%02d", remaingTime)
+    }
+
 }
