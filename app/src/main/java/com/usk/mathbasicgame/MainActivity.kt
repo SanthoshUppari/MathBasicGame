@@ -28,5 +28,19 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        subtraction.setOnClickListener {
+
+            val intent = Intent(this@MainActivity, SubActivity::class.java)
+            startActivity(intent);
+
+        }
+
+        multi.setOnClickListener {
+
+            val intent = Intent(this@MainActivity, MulActivity::class.java)
+            startActivity(intent);
+
+        }
+
     }
 }

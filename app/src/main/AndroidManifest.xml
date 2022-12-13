@@ -13,6 +13,22 @@
         android:theme="@style/Theme.MathBasicGame"
         tools:targetApi="31">
         <activity
+            android:name=".MulActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".SubActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".FinalActivity"
             android:exported="false">
             <meta-data
